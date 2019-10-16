@@ -1,0 +1,6 @@
+/home/cx/IdeaProjects/users_csv/src/main/java/com/cx/users/csv/services/users/UserService.java
+/home/cx/IdeaProjects/users_csv/src/main/java/com/cx/users/csv/controllers/users/UserController.java
+/home/cx/IdeaProjects/users_csv/src/main/java/com/cx/users/csv/UsersCsvApplication.java
+/home/cx/IdeaProjects/users_csv/src/main/java/com/cx/users/csv/config/main/MainConfig.java
+/home/cx/IdeaProjects/users_csv/src/main/java/com/cx/users/csv/repos/users/UserRepository.java
+/home/cx/IdeaProjects/users_csv/src/main/java/com/cx/users/csv/dao/users/User.java
