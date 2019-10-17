@@ -25,13 +25,12 @@ public class UserDaoService {
     }
 
     public List<User> getUsersByLastNameSortedByBirthDate(String name) {
-        return userRepository.findByLastNameOrderByBirthDate("%"+name+"%");
+        return userRepository.findByLastNameOrderByBirthDate("%" + name + "%");
     }
 
-    public List<User> getOldestUserWithPhoneNumber(){
+    public List<User> getOldestUserWithPhoneNumber() {
         return userRepository.findOldestUserWithPhoneNumber();
     }
-
 
 
     // for better performance should use userRepository.saveAll(..)
@@ -47,7 +46,7 @@ public class UserDaoService {
         }
     }
 
-    public Integer getUserCount(){
+    public Integer getUserCount() {
         return userRepository.getTotalUserCount();
     }
 
