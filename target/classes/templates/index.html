@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <title>Users csv app</title>
+    <th:block th:include="fragments/main_fragment.html :: headerincludes">
+    </th:block>
+</head>
+
+<body>
+<th:block th:include="fragments/main_fragment.html :: navbar(active_page='')"></th:block>
+
+
+<div th:replace="fragments/main_fragment.html :: footer"></div>
+</body>
+</html>
