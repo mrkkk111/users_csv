@@ -6,10 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,8 +22,24 @@ public class UserController {
 
     @GetMapping("/all")
     @ResponseBody
-    ResponseEntity<List<User>> getAllUsers() {
+    public ResponseEntity<List<User>> getAllUsers() {
         return ResponseEntity.ok(userDaoService.getAllUsers());
+    }
+
+    // JSR validation annotations don't seem to work on the method below
+    @GetMapping("/byname/{name:.{3," + User.MAX_STR_FIELD_LENGTH + "}}")
+    public ResponseEntity<List<User>> getUsersByName(@PathVariable("name") String userName) {
+        return ResponseEntity.ok(userDaoService.getUsersByLastNameSortedByBirthDate(userName));
+    }
+
+    @GetMapping("/oldest")
+    public ResponseEntity<List<User>> getOldestUserWithPhoneNumber() {
+        return ResponseEntity.ok(userDaoService.getOldestUserWithPhoneNumber());
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<Integer> getUserCount() {
+        return ResponseEntity.ok(userDaoService.getUserCount());
     }
 
 

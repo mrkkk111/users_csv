@@ -72,7 +72,7 @@ public class CsvUploadController {
     }
 
     private String handleEmptyOrNullFileUpload(Model model) {
-        logger.info("Multipart file is null");
+        logger.debug("Multipart file is null");
         model.addAttribute(FILE_VALIDATION_ERROR, "File is not selected");
         return PRESENTATION_CSV_UPLOAD;
     }

@@ -3,10 +3,7 @@ package com.cx.users.csv.dao.users;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PastOrPresent;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 @Getter
@@ -17,16 +14,21 @@ import java.time.LocalDate;
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = "phoneNumber")})
 public class User {
+    public static final int MAX_STR_FIELD_LENGTH = 80;
+    public static final int PHONE_NO_FIELD_LENGTH = 9;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotEmpty
-    @Column(nullable = false)
+    @Column(nullable = false, length = MAX_STR_FIELD_LENGTH)
+    @Size(max = MAX_STR_FIELD_LENGTH)
     private String lastName;
 
-    @Column(nullable = false)
     @NotEmpty
+    @Column(nullable = false, length = MAX_STR_FIELD_LENGTH)
+    @Size(max = MAX_STR_FIELD_LENGTH)
     private String firstName;
 
     @Column(nullable = false)
@@ -34,11 +36,11 @@ public class User {
     @NotNull
     private LocalDate birthDate;
 
-    @Column(nullable = true)
-    @Pattern(regexp = "[0-9]{9}")
+    @Column(nullable = true, length = PHONE_NO_FIELD_LENGTH)
+    @Pattern(regexp = "[0-9]{" + PHONE_NO_FIELD_LENGTH + "}")
     private String phoneNumber;
 
-    public User(@NotEmpty String lastName, @NotEmpty String firstName, @PastOrPresent LocalDate birthDate, @Pattern(regexp = "[0-9]{9}") String phoneNumber) {
+    public User(@NotEmpty @Size(max = MAX_STR_FIELD_LENGTH) String lastName, @NotEmpty @Size(max = MAX_STR_FIELD_LENGTH) String firstName, @PastOrPresent @NotNull LocalDate birthDate, @Pattern(regexp = "[0-9]{" + PHONE_NO_FIELD_LENGTH + "}") String phoneNumber) {
         this.lastName = lastName;
         this.firstName = firstName;
         this.birthDate = birthDate;

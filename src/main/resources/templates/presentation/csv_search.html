@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <title>Upload CSV</title>
+    <th:block th:include="fragments/main_fragment.html :: headerincludes">
+    </th:block>
+</head>
+
+<body>
+<th:block th:include="fragments/main_fragment.html :: navbar(active_page='csv_search')"></th:block>
+
+<div class="jumbotron center-block">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="input-group">
+                    <input id="search_box" type="text" class="form-control"
+                           placeholder="Search users by name... (min 3 chars)">
+                    <span class="input-group-btn">
+        <button class="btn btn-default" type="button" onclick="getUsers('search')">Go!</button>
+                    </span>
+                </div><!-- /input-group -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2 col-md-offset-2">
+                <div id="delete_button" class="btn btn-danger" onclick="getChecked()" disabled="true">Delete all checked
+                    users
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div id="oldest_button" class="btn btn-default" onclick="getUsers('oldest')">Show oldest user with phone
+                    number
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div id="cnt_button" class="btn btn-default" onclick="getUserCount()">Get user count pop-up
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <ul id="found_list" class="list-group">
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/main_fragment.html :: footer"></div>
+<script>
+
+    function appendHeaderRow() {
+        var headerRow = '<li class="list-group-item"><div class="row">\n' +
+            '<div class="col-md-2"> Last name: </div>' +
+            '<div class="col-md-2"> First name: </div>' +
+            '<div class="col-md-2"> Birth date: </div>' +
+            '<div class="col-md-2"> Phone number: </div>' +
+            '<div class="col-md-2"> Select </div>' +
+            '</div></li>';
+
+        $('#found_list').append(headerRow);
+    }
+
+    function appendResults(users) {
+        $('#found_list').empty();
+
+        appendHeaderRow();
+
+        users.forEach(function (user) {
+            var row = '<li class="list-group-item">' +
+                '<div class="row">\n' +
+                ' <div class="col-md-2">' +
+                user["lastName"] +
+                ' </div>' +
+                ' <div class="col-md-2">' +
+                user["firstName"] +
+                ' </div>' +
+                ' <div class="col-md-2">' +
+                (user["birthDate"] != null ? user["birthDate"].join('-') : '') +
+                ' </div>' +
+                ' <div class="col-md-2">' +
+                (user["phoneNumber"] != null ? user["phoneNumber"] : '') +
+                ' </div>' +
+                ' <div class="col-md-2">' +
+                ' <input type="checkbox" id="cb_' + user["id"] + '" onclick="refreshDeleteButton()"/>' +
+                ' </div>' +
+                '</div>' +
+                '</li>';
+            $('#found_list').append(row);
+        });
+    }
+
+    function getChecked() {
+        if (!$('#delete_button').is("disabled")) {
+            $('#found_list input:checkbox:checked').each(function () {
+                alert($(this).attr("id"));
+            });
+        }
+    }
+
+    function refreshDeleteButton() {
+        var isDisabled = true;
+        if ($('#found_list input:checkbox:checked').size() > 0) {
+            isDisabled = false;
+        }
+        $('#delete_button').attr("disabled", isDisabled);
+    }
+
+    function getUsers(mode) {
+        var queryString = "/users/all";
+        if ($('#search_box').val() && mode === 'search') {
+            queryString = '/users/byname/' + $('#search_box').val()
+        } else if (mode === 'oldest') {
+            queryString = '/users/oldest'
+        }
+        $.get(encodeURI(queryString))
+            .done(function (data) {
+                appendResults(data);
+            })
+            .fail(function () {
+                alert("error connecting to server");
+            });
+
+    }
+
+    function getUserCount() {
+        $.get('/users/count')
+            .done(function (data) {
+                alert('Current user count is: ' + data);
+            })
+            .fail(function () {
+                alert("error connecting to server");
+            });
+    }
+
+    $(function () {
+        appendHeaderRow();
+        $.ajaxSetup({timeout: 20000});
+    });
+
+
+</script>
+</body>
+</html>

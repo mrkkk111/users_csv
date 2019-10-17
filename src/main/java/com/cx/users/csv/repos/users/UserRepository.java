@@ -2,6 +2,8 @@ package com.cx.users.csv.repos.users;
 
 import com.cx.users.csv.dao.users.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -9,4 +11,13 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findByPhoneNumber(String phoneNumber);
+
+    @Query("from User where lower(lastName) like lower(:lastName) order by birthDate")
+    List<User> findByLastNameOrderByBirthDate(@Param("lastName") String name);
+
+    @Query("from User where phoneNumber is not null and birthDate <= all(select birthDate from User)")
+    List<User> findOldestUserWithPhoneNumber();
+
+    @Query("select count(u) from User u")
+    Integer getTotalUserCount();
 }
