@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class UsersCsvApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(UsersCsvApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(UsersCsvApplication.class, args);
+    }
 
 }
