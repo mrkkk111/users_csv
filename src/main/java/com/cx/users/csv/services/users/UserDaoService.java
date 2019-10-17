@@ -5,6 +5,7 @@ import com.cx.users.csv.repos.users.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,12 +21,12 @@ public class UserDaoService {
 
     private Logger logger = LoggerFactory.getLogger(UserDaoService.class);
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<User> getAllUsers(Pageable pageable) {
+        return userRepository.findAll(pageable).toList();
     }
 
-    public List<User> getUsersByLastNameSortedByBirthDate(String name) {
-        return userRepository.findByLastNameOrderByBirthDate("%" + name + "%");
+    public List<User> getUsersByLastNameSortedByBirthDate(String name, Pageable pageable) {
+        return userRepository.findByLastNameOrderByBirthDate("%" + name + "%", pageable);
     }
 
     public List<User> getOldestUserWithPhoneNumber() {

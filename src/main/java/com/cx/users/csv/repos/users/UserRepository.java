@@ -1,6 +1,7 @@
 package com.cx.users.csv.repos.users;
 
 import com.cx.users.csv.dao.users.User;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,7 +14,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findByPhoneNumber(String phoneNumber);
 
     @Query("from User where lower(lastName) like lower(:lastName) order by birthDate")
-    List<User> findByLastNameOrderByBirthDate(@Param("lastName") String name);
+    List<User> findByLastNameOrderByBirthDate(@Param("lastName") String name, Pageable pageable);
 
     @Query("from User where phoneNumber is not null and birthDate <= all(select birthDate from User)")
     List<User> findOldestUserWithPhoneNumber();

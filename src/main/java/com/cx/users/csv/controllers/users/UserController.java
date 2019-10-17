@@ -5,6 +5,8 @@ import com.cx.users.csv.services.users.UserDaoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +17,8 @@ import java.util.List;
 @RequestMapping(path = "/users")
 public class UserController {
 
+    private static final Sort USER_PAGE_SORT_ORDER = Sort.by(User.BIRTHDAY_COLUMN_NAME).and(Sort.by(User.ID_COLUMN_NAME));
+
     @Autowired
     private UserDaoService userDaoService;
 
@@ -22,14 +26,14 @@ public class UserController {
 
     @GetMapping("/all")
     @ResponseBody
-    public ResponseEntity<List<User>> getAllUsers() {
-        return ResponseEntity.ok(userDaoService.getAllUsers());
+    public ResponseEntity<List<User>> getAllUsers(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "5") Integer pageSize) {
+        return ResponseEntity.ok(userDaoService.getAllUsers(PageRequest.of(page, pageSize, USER_PAGE_SORT_ORDER)));
     }
 
     // JSR validation annotations don't seem to work on the method below
     @GetMapping("/byname/{name:.{3," + User.MAX_STR_FIELD_LENGTH + "}}")
-    public ResponseEntity<List<User>> getUsersByName(@PathVariable("name") String userName) {
-        return ResponseEntity.ok(userDaoService.getUsersByLastNameSortedByBirthDate(userName));
+    public ResponseEntity<List<User>> getUsersByName(@PathVariable("name") String userName, @RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "5") Integer pageSize) {
+        return ResponseEntity.ok(userDaoService.getUsersByLastNameSortedByBirthDate(userName,PageRequest.of(page, pageSize, USER_PAGE_SORT_ORDER)));
     }
 
     @GetMapping("/oldest")

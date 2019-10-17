@@ -16,9 +16,12 @@ import java.time.LocalDate;
 public class User {
     public static final int MAX_STR_FIELD_LENGTH = 80;
     public static final int PHONE_NO_FIELD_LENGTH = 9;
+    public static final String BIRTHDAY_COLUMN_NAME = "birthDate";
+    public static final String ID_COLUMN_NAME = "id";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = ID_COLUMN_NAME)
     private Long id;
 
     @NotEmpty
@@ -31,7 +34,7 @@ public class User {
     @Size(max = MAX_STR_FIELD_LENGTH)
     private String firstName;
 
-    @Column(nullable = false)
+    @Column(nullable = false,name = BIRTHDAY_COLUMN_NAME)
     @PastOrPresent
     @NotNull
     private LocalDate birthDate;
