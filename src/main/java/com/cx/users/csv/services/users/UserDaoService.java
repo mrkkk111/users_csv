@@ -50,5 +50,8 @@ public class UserDaoService {
     public Integer getUserCount() {
         return userRepository.getTotalUserCount();
     }
+    public void deleteUser(Long id){
+        userRepository.deleteById(id);
+    }
 
 }

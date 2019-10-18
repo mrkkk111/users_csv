@@ -108,7 +108,17 @@
     function getChecked() {
         if (!$('#delete_button').is("disabled")) {
             $('#found_list input:checkbox:checked').each(function () {
-                alert($(this).attr("id"));
+                var rowCbId = $(this).attr("id");
+                var thisCb = this;
+
+                $.ajax({
+                    url: '/users/'+rowCbId.substr(3),
+                    type: 'DELETE',
+                    success: function(result) {
+                        $(thisCb).closest('li').remove();
+                        refreshDeleteButton();
+                    }
+                });
             });
         }
     }
@@ -132,7 +142,6 @@
 
 
     function getPaginationQueryString(pageSize, pageNumber) {
-
         return '?pageSize=' + pageSize + '&page=' + pageNumber;
     }
 
