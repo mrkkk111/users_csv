@@ -16,7 +16,7 @@
             <div class="col-md-8 col-md-offset-2">
                 <div class="input-group">
                     <input id="search_box" type="text" class="form-control"
-                           placeholder="Search users by name... (min 3 chars)">
+                           placeholder="Search users by name... (0 or min 3 chars)" title="0 or min 3 chars allowed">
                     <span class="input-group-btn">
         <button class="btn btn-default" type="button" onclick="getUsers('search')">Go!</button>
                     </span>
@@ -110,8 +110,14 @@
 
     function getUsers(mode) {
         var queryString = "/users/all";
-        if ($('#search_box').val() && mode === 'search') {
-            queryString = '/users/byname/' + $('#search_box').val()
+        var searchText = $('#search_box').val();
+        if (searchText && mode === 'search') {
+            if(searchText.length >= 3) {
+                queryString = '/users/byname/' + $('#search_box').val();
+            } else {
+                alert("Search text must have at least 3 characters or be empty")
+                return;
+            }
         } else if (mode === 'oldest') {
             queryString = '/users/oldest'
         }
