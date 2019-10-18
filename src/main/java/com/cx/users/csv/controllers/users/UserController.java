@@ -33,7 +33,7 @@ public class UserController {
     // JSR validation annotations don't seem to work on the method below
     @GetMapping("/byname/{name:.{3," + User.MAX_STR_FIELD_LENGTH + "}}")
     public ResponseEntity<List<User>> getUsersByName(@PathVariable("name") String userName, @RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "5") Integer pageSize) {
-        return ResponseEntity.ok(userDaoService.getUsersByLastNameSortedByBirthDate(userName,PageRequest.of(page, pageSize, USER_PAGE_SORT_ORDER)));
+        return ResponseEntity.ok(userDaoService.getUsersByLastNameSortedByBirthDate(userName, PageRequest.of(page, pageSize, USER_PAGE_SORT_ORDER)));
     }
 
     @GetMapping("/oldest")

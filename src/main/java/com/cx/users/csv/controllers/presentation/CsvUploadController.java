@@ -23,7 +23,7 @@ public class CsvUploadController {
 
     private static final String FILE_VALIDATION_ERROR = "fileValidationError";
     private static final String PRESENTATION_CSV_UPLOAD = "presentation/csv_upload";
-    private static final String CSV_FILE_POST_REDIRECT_PATH = "redirect:/";
+    private static final String CSV_FILE_POST_REDIRECT_PATH = "redirect:/csv/search";
 
     private Logger logger = LoggerFactory.getLogger(CsvUploadController.class);
 
@@ -54,7 +54,7 @@ public class CsvUploadController {
         try (InputStreamReader reader = new InputStreamReader(multipartFile.getInputStream())) {
             processCsvFile(reader);
             logger.info("Processed multipart file: " + fileName);
-        } catch (IOException e) {
+        } catch (Exception e) {
             redirectPath = handleFileUploadError(model, e);
         }
         return redirectPath;
@@ -65,7 +65,7 @@ public class CsvUploadController {
         userDaoService.mergeUsers(users);
     }
 
-    private String handleFileUploadError(Model model, IOException e) {
+    private String handleFileUploadError(Model model, Exception e) {
         logger.error("Multipart file upload failed " + e.getMessage());
         model.addAttribute(FILE_VALIDATION_ERROR, "File cannot be parsed");
         return PRESENTATION_CSV_UPLOAD;

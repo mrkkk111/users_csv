@@ -34,7 +34,7 @@ public class User {
     @Size(max = MAX_STR_FIELD_LENGTH)
     private String firstName;
 
-    @Column(nullable = false,name = BIRTHDAY_COLUMN_NAME)
+    @Column(nullable = false, name = BIRTHDAY_COLUMN_NAME)
     @PastOrPresent
     @NotNull
     private LocalDate birthDate;

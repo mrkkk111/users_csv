@@ -30,7 +30,8 @@
                 </div>
             </div>
             <div class="col-md-2">
-                <div id="oldest_button" class="btn btn-default" onclick="getUsers('oldest')" title="Option without pagination">Show oldest user(s)
+                <div id="oldest_button" class="btn btn-default" onclick="getUsers('oldest')"
+                     title="Option without pagination">Show oldest user(s)
                 </div>
             </div>
             <div class="col-md-2">
@@ -112,9 +113,9 @@
                 var thisCb = this;
 
                 $.ajax({
-                    url: '/users/'+rowCbId.substr(3),
+                    url: '/users/' + rowCbId.substr(3),
                     type: 'DELETE',
-                    success: function(result) {
+                    success: function (result) {
                         $(thisCb).closest('li').remove();
                         refreshDeleteButton();
                     }
@@ -133,7 +134,7 @@
 
     function getPageField(selector, defaultPageSize, minSize, maxSize) {
         var pageSize = parseInt($(selector).val());
-        if (isNaN(pageSize) || pageSize < minSize|| pageSize > maxSize) {
+        if (isNaN(pageSize) || pageSize < minSize || pageSize > maxSize) {
             pageSize = defaultPageSize;
             $(selector).val(defaultPageSize);
         }
@@ -146,8 +147,8 @@
     }
 
     function getUsers(mode) {
-        var pageSize = getPageField('#page_size',5,1,100);
-        var pageNumber = getPageField('#page_number',0,0,100000);
+        var pageSize = getPageField('#page_size', 5, 1, 100);
+        var pageNumber = getPageField('#page_number', 0, 0, 100000);
         var paginationQueryString = getPaginationQueryString(pageSize, pageNumber);
         var queryString = '/users/all' + paginationQueryString;
 
@@ -156,11 +157,11 @@
             if (searchText.length >= 3) {
                 queryString = '/users/byname/' + $('#search_box').val() + paginationQueryString;
             } else {
-                alert("Search text must have at least 3 characters or be empty")
+                alert("Search text must have at least 3 characters or be empty");
                 return;
             }
         } else if (mode === 'oldest') {
-            queryString = '/users/oldest'
+            queryString = '/users/oldest';
         }
 
         $.get(encodeURI(queryString))
@@ -186,6 +187,7 @@
     $(function () {
         appendHeaderRow();
         $.ajaxSetup({timeout: 20000});
+        getUsers('search');
     });
 
 
