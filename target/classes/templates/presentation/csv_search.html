@@ -13,7 +13,7 @@
 <div class="jumbotron center-block">
     <div class="container">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-10 col-md-offset-1">
                 <div class="input-group">
                     <input id="search_box" type="text" class="form-control"
                            placeholder="Search users by name... (0 or min 3 chars)" title="0 or min 3 chars allowed">
@@ -24,23 +24,36 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-2 col-md-offset-2">
+            <div class="col-md-2 col-md-offset-1">
                 <div id="delete_button" class="btn btn-danger" onclick="getChecked()" disabled="true">Delete all checked
                     users
                 </div>
             </div>
             <div class="col-md-2">
-                <div id="oldest_button" class="btn btn-default" onclick="getUsers('oldest')">Show oldest user with phone
-                    number
+                <div id="oldest_button" class="btn btn-default" onclick="getUsers('oldest')" title="Option without pagination">Show oldest user(s)
                 </div>
             </div>
             <div class="col-md-2">
-                <div id="cnt_button" class="btn btn-default" onclick="getUserCount()">Get user count pop-up
+                <div id="cnt_button" class="btn btn-default" onclick="getUserCount()">Get user
+                    count pop-up
                 </div>
             </div>
+            <div class="col-md-2">
+                <div style="margin-top: 4px">
+                    Page size: <input id="page_size" type="number" name="pagination" min="1" max="100" value="5"
+                                      title="Page size"/>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div style="margin-top: 4px">
+                    Page no: <input id="page_number" type="number" name="pagination" min="0" max="100000" value="0"
+                                    title="Page number"/>
+                </div>
+            </div>
+
         </div>
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-10 col-md-offset-1">
                 <ul id="found_list" class="list-group">
                 </ul>
             </div>
@@ -108,12 +121,31 @@
         $('#delete_button').attr("disabled", isDisabled);
     }
 
+    function getPageField(selector, defaultPageSize, minSize, maxSize) {
+        var pageSize = parseInt($(selector).val());
+        if (isNaN(pageSize) || pageSize < minSize|| pageSize > maxSize) {
+            pageSize = defaultPageSize;
+            $(selector).val(defaultPageSize);
+        }
+        return pageSize;
+    }
+
+
+    function getPaginationQueryString(pageSize, pageNumber) {
+
+        return '?pageSize=' + pageSize + '&page=' + pageNumber;
+    }
+
     function getUsers(mode) {
-        var queryString = "/users/all";
+        var pageSize = getPageField('#page_size',5,1,100);
+        var pageNumber = getPageField('#page_number',0,0,100000);
+        var paginationQueryString = getPaginationQueryString(pageSize, pageNumber);
+        var queryString = '/users/all' + paginationQueryString;
+
         var searchText = $('#search_box').val();
         if (searchText && mode === 'search') {
-            if(searchText.length >= 3) {
-                queryString = '/users/byname/' + $('#search_box').val();
+            if (searchText.length >= 3) {
+                queryString = '/users/byname/' + $('#search_box').val() + paginationQueryString;
             } else {
                 alert("Search text must have at least 3 characters or be empty")
                 return;
@@ -121,6 +153,7 @@
         } else if (mode === 'oldest') {
             queryString = '/users/oldest'
         }
+
         $.get(encodeURI(queryString))
             .done(function (data) {
                 appendResults(data);
