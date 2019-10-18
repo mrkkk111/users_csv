@@ -1,9 +1,7 @@
-com/cx/users/csv/config/main/MainConfig.class
-com/cx/users/csv/utils/csv/CsvUtil.class
 com/cx/users/csv/controllers/users/UserController.class
 com/cx/users/csv/dao/users/CsvColumnNames.class
-com/cx/users/csv/repos/users/UserRepository.class
-com/cx/users/csv/services/users/UserService.class
 com/cx/users/csv/utils/csv/users/CsvUsersParser.class
+com/cx/users/csv/config/main/MainConfig.class
+com/cx/users/csv/repos/users/UserRepository.class
 com/cx/users/csv/UsersCsvApplication.class
 com/cx/users/csv/dao/users/User.class
