@@ -4,7 +4,7 @@
 
 https://csv-spring-app.herokuapp.com/csv/search
 
-(can take some time - up to 90s to start up because of free hosting account)
+(can take some time - up to 90s to start up because of a free hosting account)
 
 
 ## description
@@ -15,6 +15,8 @@ and was created using ThymeLeaf, Bootstrap and JQuery.
 This app is supposed to process a csv file that contains user data.
 A test file below is missing some data, but can be enhanced, parsed and stored in the DB.
 
+This [test file](https://raw.githubusercontent.com/mrkkk111/users_csv/master/csv/txt.csv) is included in the csv directory in the project root,<br/>
+to save it on the hard drive please follow the link and hit ctrl + s.
 
 ```first_name;last_name;birth_date;phone_no
 Stefan;Testowy;1988.11.11;600700800
